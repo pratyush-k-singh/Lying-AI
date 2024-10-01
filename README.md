@@ -47,7 +47,7 @@ Upon starting the training, you will be prompted to:
 
 ### Playing Against the AI
 
-Although the primary focus of this project is AI development, you can also play against the AI by modifying the scripts. Once the AI is trained, you can integrate gameplay by adding interaction with the `Agent` class from `agent.py` and the `LiarsDiceGame` environment in `env.py`.
+Although the primary focus of this project is AI development, you can also play against the AI by running the game.py script, although the model itself does need to be run to train the AI first.
 
 ### Training Workflow
 
