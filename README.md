@@ -12,7 +12,8 @@ This project is a single-player Liars Dice game designed with a focus on AI deve
 
 ```plaintext
 liars-dice-ai/
-│
+├── game/
+│   ├── game.py        # Contains the code to play against a trained model
 ├── src/
 │   ├── agent.py       # Contains the AI agent logic
 │   ├── env.py         # Game environment and mechanics
