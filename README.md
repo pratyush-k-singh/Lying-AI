@@ -1,100 +1,122 @@
-# Liars Dice AI Development
+# Liar's Dice AI
 
-This project is a single-player Liars Dice game designed with a focus on AI development. The AI is built using PyTorch, and the game allows you to train the AI through self-play, or optionally, play against the AI yourself. The core goal is to develop, test, and improve the AI's decision-making strategies in this classic dice game.
+A deep reinforcement learning agent for the classic game Liar's Dice, achieving an 84% win rate through stable DQN training and reward scaling mechanics.
 
-## Features
-- **AI Training**: Train the AI using reinforcement learning by running multiple development cycles (`num_episodes`).
-- **Single-Player Mode**: Play against the trained AI to test its behavior in real gameplay.
-- Multiple AI Opponents: Play against multiple trained AI models simultaneously.
-- **Customizable Game Environment**: Modify the number of dice, players, and sides to suit different game variants.
+## Technical Highlights
+
+• Implemented DQN-based AI for Liar's Dice with dual policy/value heads, achieving 84% win rate vs random agents
+• Built vectorized game environment with legal action masking and reward scaling for stable RL training
+• Developed multi-stage training pipeline with interim model checkpoints and TensorBoard visualization
+
+## Game Rules
+
+Liar's Dice is a strategic dice game of deception and probability. Each player:
+- Rolls a hidden set of dice
+- Takes turns making increasingly higher bids about the total dice in play
+- Can either make a higher bid or challenge the previous bid as a lie
+
+A bid consists of:
+- A quantity (e.g., "three")
+- A face value (e.g., "fours")
+
+The bid claims how many dice showing that face value are present across all dice in play.
 
 ## Project Structure
 
-```plaintext
-liars-dice-ai/
-├── game/
-│   ├── game.py        # Contains the code to play against a trained model
+```
+liars_dice_ai/
+├── configs/             # Training configuration
+│   └── default.yaml    
 ├── src/
-│   ├── agent.py       # Contains the AI agent logic
-│   ├── env.py         # Game environment and mechanics
-│   ├── trainer.py     # Training logic for AI agents
-│   ├── main.py        # Entry point for training the AI
-│
-├── logs/              # Log files are stored here after each training session
-├── models/            # Directory for saving trained models
-├── requirements.txt   # Python dependencies
+│   ├── env/            # Game environment
+│   ├── agents/         # DQN implementation
+│   ├── models/         # Neural networks
+│   ├── training/       # Training utilities
+│   └── utils/          # Helper functions
+├── scripts/
+│   ├── train.py        # Training script
+│   └── play.py         # Human vs AI interface
+└── models/             # Saved checkpoints
 ```
 
-## Getting Started
+## Installation
 
-### Prerequisites
-Ensure you have Python 3.8+ installed. Install the required dependencies using:
-
+1. Clone the repository:
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/pratyushsingh97/liars_dice_ai.git
+cd liars_dice_ai
 ```
 
-### Running AI Training
-
-You can train the AI by running the `main.py` script. The AI can be trained from scratch or by loading a previously trained model.
-
+2. Create a virtual environment:
 ```bash
-python src/main.py
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-Upon starting the training, you will be prompted to:
-- Specify the number of development cycles (episodes) for training.
-- Choose whether to load a previous model or start training a new AI from scratch.
-
-### Playing Against the AI
-
-Although the primary focus of this project is AI development, you can also play against the AI by running the game.py script, although the model itself does need to be run to train the AI first.
-
-### Training Workflow
-
-- **Agent**: The AI agent is implemented using a neural network model built with PyTorch (`agent.py`).
-- **Trainer**: The `Trainer` class in `trainer.py` is responsible for running the training loop and managing the game environment.
-- **Game Environment**: The core game logic and rules are in `env.py`, handling dice rolls, bids, challenges, and win/loss conditions.
-
-### Saving and Loading Models
-
-The AI models are saved automatically after training in the `models/` directory. The models are named sequentially, and you can load them during training by specifying the model file.
-
-### Logging
-
-Logs of each training session, including episode results and AI decisions, are saved in the `logs/` directory.
-
-## Customization
-
-You can customize the following aspects of the game and AI:
-- **Number of Dice/Players**: Change the number of dice or players by modifying the `LiarsDiceGame` initialization in `trainer.py`.
-- **AI Model**: Modify the AI architecture in the `Agent` class in `agent.py` to test different strategies and neural network structures.
-- **Game Variant**: The `variant` parameter in the `Agent` class allows you to explore different game rules.
-
-## Example Training Session
-
-Here's an example of what running a training session looks like:
-
+3. Install dependencies:
 ```bash
-$ python src/main.py
-Enter number of development cycles: 1000
-Load from a previous model? (Y/N): n
-Logging to ../logs/log01.log
-Episode 1/1000
-Player 0 chooses to bid (3, 2)
-Player 1 challenges!
-Player 1 wins the challenge!
-...
-Training completed. Model saved for Player 0 at ../models/model_player_0.model
-Model saved for Player 1 at ../models/model_player_1.model
+pip install -e ".[dev]"
 ```
 
-## Future Improvements
+## Usage
 
-- **Advanced AI**: Implement more sophisticated learning algorithms or neural network architectures to enhance AI performance.
-- **Evaluation Metrics**: Integrate evaluation metrics to better analyze AI performance during training.
-- **Expanded Game Modes**: Develop additional game modes or variants for further AI experimentation.
+### Training New Models
+```bash
+# Start training
+python scripts/train.py --config configs/default.yaml
+
+# Monitor progress
+tensorboard --logdir logs/
+```
+
+Training checkpoints are saved automatically:
+- Best model: `models/default_best.pt`
+- Regular checkpoints: `models/default_episode_{N}.pt`
+
+To preserve previous results, modify `exp_name` in config:
+```yaml
+exp_name: "experiment_v2"  # Creates new log/model directories
+```
+
+### Playing Against AI
+```bash
+# Play against best model
+python scripts/play.py --model models/default_best.pt
+
+# Play specific checkpoint
+python scripts/play.py --model models/default_episode_1700.pt
+```
+
+## Training Performance
+
+Key milestones from our best training run:
+- Episode 500: 74% win rate
+- Episode 1000: 82% win rate
+- Episode 1700: 84% win rate (peak performance)
+- Episodes 2000+: Stable performance
+
+## Implementation Details
+
+The DQN implementation features:
+- Dual policy and value heads
+- Experience replay buffer
+- Target network updates
+- Reward scaling and gradient clipping
+- TensorBoard metrics tracking
+- Model checkpointing
+
+## Requirements
+
+- Python ≥ 3.8
+- PyTorch ≥ 1.9.0
+- NumPy ≥ 1.21.0
+- TensorBoard ≥ 2.7.0
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- OpenAI's Spinning Up for RL implementation references
+- DeepMind's DQN papers for architecture inspiration

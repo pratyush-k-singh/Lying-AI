@@ -1,0 +1,29 @@
+{
+    "env": {
+        "num_dice": 5,
+        "num_faces": 6
+    },
+    "model": {
+        "hidden_dim": 128,
+        "num_hidden_layers": 2,
+        "dropout": 0.1
+    },
+    "training": {
+        "num_episodes": 10000,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "gamma": 0.99,
+        "epsilon_start": 1.0,
+        "epsilon_end": 0.01,
+        "epsilon_decay": 0.995,
+        "target_update_freq": 100,
+        "replay_buffer_size": 10000,
+        "eval_frequency": 100,
+        "num_eval_episodes": 100,
+        "checkpoint_freq": 1000
+    },
+    "device": "cuda",
+    "exp_name": "default",
+    "save_dir": "models",
+    "log_dir": "logs"
+}

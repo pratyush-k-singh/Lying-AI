@@ -1,0 +1,12 @@
+LICENSE
+README.md
+setup.py
+liars_dice_ai.egg-info/PKG-INFO
+liars_dice_ai.egg-info/SOURCES.txt
+liars_dice_ai.egg-info/dependency_links.txt
+liars_dice_ai.egg-info/entry_points.txt
+liars_dice_ai.egg-info/requires.txt
+liars_dice_ai.egg-info/top_level.txt
+tests/test_agents.py
+tests/test_env.py
+tests/test_training.py

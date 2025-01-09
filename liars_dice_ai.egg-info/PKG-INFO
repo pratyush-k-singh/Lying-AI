@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: liars_dice_ai
+Version: 0.1.0
+Summary: A deep reinforcement learning implementation for the game Liar's Dice
+Author: Pratyush Singh
+Author-email: pratyush.kar.singh@gmail.com
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: torch>=1.9.0
+Requires-Dist: tqdm>=4.62.0
+Requires-Dist: PyYAML>=5.4.1
+Requires-Dist: tensorboard>=2.7.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.2.5; extra == "dev"
+Requires-Dist: black>=21.9b0; extra == "dev"
+Requires-Dist: isort>=5.9.3; extra == "dev"
+Requires-Dist: flake8>=3.9.2; extra == "dev"
+Requires-Dist: mypy>=0.910; extra == "dev"

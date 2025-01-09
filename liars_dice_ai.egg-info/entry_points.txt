@@ -1,0 +1,3 @@
+[console_scripts]
+play-liars-dice = src.scripts.play:main
+train-liars-dice = src.scripts.train:main
